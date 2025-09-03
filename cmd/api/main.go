@@ -6,6 +6,9 @@ import (
 	"spy-cat-agency/internal/cats/application/services"
 	"spy-cat-agency/internal/cats/interfaces/handlers"
 	"spy-cat-agency/internal/cats/repository"
+	services2 "spy-cat-agency/internal/missions/application/services"
+	handlers2 "spy-cat-agency/internal/missions/interfaces/handlers"
+	repository2 "spy-cat-agency/internal/missions/repository"
 	"spy-cat-agency/internal/shared/db"
 	"spy-cat-agency/internal/shared/router"
 
@@ -31,7 +34,13 @@ func main() {
 		Service: spyCatsService,
 	}
 
-	r := router.SetUpRouter(spyCatsHandler)
+	missionsRepo := repository2.NewMissionsRepository(db)
+	missionsService := services2.NewMissionsService(missionsRepo)
+	missionsHandler := &handlers2.MissionsHandler{
+		Service: missionsService,
+	}
+
+	r := router.SetUpRouter(spyCatsHandler, missionsHandler)
 
 	apiPort := os.Getenv("API_PORT")
 	if err := r.Run(":" + apiPort); err != nil {

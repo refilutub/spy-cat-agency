@@ -5,6 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"spy-cat-agency/internal/cats/interfaces"
 	"spy-cat-agency/internal/cats/interfaces/handlers"
+	interfaces2 "spy-cat-agency/internal/missions/interfaces"
+	handlers2 "spy-cat-agency/internal/missions/interfaces/handlers"
 	"spy-cat-agency/internal/shared/middlewares"
 
 	swaggerFiles "github.com/swaggo/files"
@@ -13,7 +15,8 @@ import (
 	_ "spy-cat-agency/docs"
 )
 
-func SetUpRouter(spyCatshandler *handlers.SpyCatHandler) *gin.Engine {
+func SetUpRouter(spyCatsHandler *handlers.SpyCatHandler,
+	missionsHandler *handlers2.MissionsHandler) *gin.Engine {
 
 	gin.SetMode(gin.ReleaseMode)
 
@@ -30,7 +33,8 @@ func SetUpRouter(spyCatshandler *handlers.SpyCatHandler) *gin.Engine {
 
 	api := r.Group("/api")
 
-	interfaces.SetUpCatRouter(api, spyCatshandler)
+	interfaces.SetUpCatRouter(api, spyCatsHandler)
+	interfaces2.SetUpMissionsRouter(api, missionsHandler)
 
 	return r
 }
