@@ -17,10 +17,20 @@ import (
 
 // @title Spy Cat Agency API
 // @version 1.0
-// @description API for managing spy cats and their missions.
 
 // @host localhost:8080
 // @BasePath /api
+// @schemes http
+
+// @tag.name Cats
+// @tag.description Operations for managing spy cats in the system
+
+// @tag.name Missions
+// @tag.description Operations for managing missions and their targets
+
+// @tag.name Targets
+// @tag.description Operations for managing mission targets
+
 func main() {
 
 	db, err := db.InitDB()

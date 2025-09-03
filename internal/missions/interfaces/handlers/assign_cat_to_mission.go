@@ -7,6 +7,19 @@ import (
 	"github.com/google/uuid"
 )
 
+// AssignCatToMission godoc
+// @Summary Assign a cat to a mission
+// @Description Assign a spy cat to a specific mission. The mission must not be completed.
+// @Tags Missions
+// @Accept json
+// @Produce json
+// @Param id path string true "Mission ID" format(uuid)
+// @Param assignment body object true "Cat assignment information" schema=object{cat_id=string}
+// @Success 200 {object} dtos.MissionResponseDTO "Cat assigned to mission successfully"
+// @Failure 400 {object} map[string]interface{} "Bad request - invalid mission ID, invalid request body, or business rule violation"
+// @Failure 500 {object} map[string]interface{} "Internal server error"
+// @Router /missions/{id}/assign-cat [post]
+// @Security BearerAuth
 func (h *MissionsHandler) AssignCatToMission(c *gin.Context) {
 	missionIDStr := c.Param("id")
 	missionID, err := uuid.Parse(missionIDStr)

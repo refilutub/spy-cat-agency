@@ -8,6 +8,19 @@ import (
 	"github.com/google/uuid"
 )
 
+// UpdateMission godoc
+// @Summary Update a mission
+// @Description Update mission information including marking it as completed
+// @Tags Missions
+// @Accept json
+// @Produce json
+// @Param id path string true "Mission ID" format(uuid)
+// @Param mission body dtos.UpdateMissionRequest true "Mission update information"
+// @Success 200 {object} dtos.MissionResponseDTO "Mission updated successfully"
+// @Failure 400 {object} map[string]interface{} "Bad request - invalid mission ID or request body"
+// @Failure 500 {object} map[string]interface{} "Internal server error"
+// @Router /missions/{id} [put]
+// @Security BearerAuth
 func (h *MissionsHandler) UpdateMission(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := uuid.Parse(idStr)
