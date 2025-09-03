@@ -1,12 +1,10 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 	"log"
 	"os"
 	"spy-cat-agency/internal/shared/db"
+	"spy-cat-agency/internal/shared/router"
 
 	_ "spy-cat-agency/docs"
 )
@@ -24,8 +22,7 @@ func main() {
 		log.Fatalf("Error initializing database: %v", err)
 	}
 
-	r := gin.Default()
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	r := router.SetUpRouter()
 
 	apiPort := os.Getenv("API_PORT")
 	if err := r.Run(":" + apiPort); err != nil {
