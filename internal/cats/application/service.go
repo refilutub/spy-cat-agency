@@ -14,4 +14,6 @@ type SpyCatService interface {
 	UpdateSpyCatSalary(spyCatId uuid.UUID, salaryReq dtos.SalaryUpdateRequest) (dtos.SpyCatSingleResponseDTO, error)
 
 	GetAllSpyCats() ([]dtos.SpyCatListResponseDTO, error)
+
+	GetSpyCat(spyCatId uuid.UUID) (dtos.SpyCatSingleResponseDTO, error)
 }

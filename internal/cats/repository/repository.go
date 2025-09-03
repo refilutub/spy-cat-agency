@@ -95,3 +95,11 @@ func (s *SpyCatRepository) GetAllSpyCats() ([]models.Cat, error) {
 	}
 	return cats, nil
 }
+
+func (s *SpyCatRepository) GetSpyCat(spyCatId uuid.UUID) (*models.Cat, error) {
+	var cat models.Cat
+	if err := s.db.First(&cat, "id = ?", spyCatId).Error; err != nil {
+		return nil, err
+	}
+	return &cat, nil
+}

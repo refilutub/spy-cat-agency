@@ -14,4 +14,5 @@ type SpyCatRepository interface {
 	UpdateSpyCatSalary(spyCatId uuid.UUID, newSalary float64) (*models.Cat, error)
 
 	GetAllSpyCats() ([]models.Cat, error)
+	GetSpyCat(spyCatId uuid.UUID) (*models.Cat, error)
 }

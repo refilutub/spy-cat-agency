@@ -17,5 +17,6 @@ func SetUpCatRouter(r *gin.RouterGroup, h *handlers.SpyCatHandler) {
 		spycats.PATCH("/:spycatId", h.UpdateSpyCatSalaryHandler)
 
 		spycats.GET("/", h.GetAllSpyCats)
+		spycats.GET("/:spycatId", h.GetSpyCat)
 	}
 }
