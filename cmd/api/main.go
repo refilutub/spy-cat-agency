@@ -1,48 +1,58 @@
 package main
 
 import (
-	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 	"log"
 	"os"
+	"spy-cat-agency/internal/cats/application/services"
+	"spy-cat-agency/internal/cats/interfaces/handlers"
+	"spy-cat-agency/internal/cats/repository"
+	services2 "spy-cat-agency/internal/missions/application/services"
+	handlers2 "spy-cat-agency/internal/missions/interfaces/handlers"
+	repository2 "spy-cat-agency/internal/missions/repository"
+	"spy-cat-agency/internal/shared/db"
+	"spy-cat-agency/internal/shared/router"
 
 	_ "spy-cat-agency/docs"
 )
 
 // @title Spy Cat Agency API
 // @version 1.0
-// @description API for managing spy cats and their missions.
 
 // @host localhost:8080
 // @BasePath /api
+// @schemes http
+
+// @tag.name Cats
+// @tag.description Operations for managing spy cats in the system
+
+// @tag.name Missions
+// @tag.description Operations for managing missions and their targets
+
+// @tag.name Targets
+// @tag.description Operations for managing mission targets
+
 func main() {
 
-	dbHost := os.Getenv("POSTGRES_HOST")
-	dbPort := os.Getenv("POSTGRES_PORT")
-	dbUser := os.Getenv("POSTGRES_USER")
-	dbPassword := os.Getenv("POSTGRES_PASSWORD")
-	dbName := os.Getenv("POSTGRES_DB")
-	apiPort := os.Getenv("API_PORT")
-
-	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
-		dbHost, dbUser, dbPassword, dbName, dbPort,
-	)
-
-	_, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := db.InitDB()
 	if err != nil {
-		log.Fatalf("Error connecting to db: %v", err)
+		log.Fatalf("Error initializing database: %v", err)
 	}
 
-	r := gin.Default()
+	spyCatsRepo := repository.NewSpyCatRepository(db)
+	spyCatsService := services.NewSpyCatService(spyCatsRepo)
+	spyCatsHandler := &handlers.SpyCatHandler{
+		Service: spyCatsService,
+	}
 
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	missionsRepo := repository2.NewMissionsRepository(db)
+	missionsService := services2.NewMissionsService(missionsRepo)
+	missionsHandler := handlers2.NewMissionsHandler(missionsService)
 
+	r := router.SetUpRouter(spyCatsHandler, missionsHandler)
+
+	apiPort := os.Getenv("API_PORT")
 	if err := r.Run(":" + apiPort); err != nil {
 		log.Fatalf("Error starting server: %v", err)
 	}
+
 }
