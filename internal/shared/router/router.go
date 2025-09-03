@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"spy-cat-agency/internal/cats/interfaces"
 	"spy-cat-agency/internal/cats/interfaces/handlers"
+	"spy-cat-agency/internal/shared/middlewares"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -17,7 +18,7 @@ func SetUpRouter(spyCatshandler *handlers.SpyCatHandler) *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
 
 	r := gin.New()
-	r.Use(gin.Logger())
+	r.Use(middlewares.LoggingMiddleware())
 	r.Use(cors.New(cors.Config{
 		AllowAllOrigins: true,
 		AllowMethods:    []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
