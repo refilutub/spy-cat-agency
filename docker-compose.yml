@@ -5,7 +5,8 @@ services:
     ports:
       - "${API_PORT}:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     env_file:
         - .env
 
@@ -13,12 +14,18 @@ services:
     image: postgres:15
     container_name: spycat_db
     restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     env_file:
         - .env
     ports:
       - "${POSTGRES_PORT}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+
 
 volumes:
   pgdata:
