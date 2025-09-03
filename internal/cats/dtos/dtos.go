@@ -25,3 +25,6 @@ type SpyCatSingleResponseDTO struct {
 type BreedName struct {
 	Name string `json:"name"`
 }
+type DeleteIds struct {
+	Ids []uuid.UUID `json:"ids"`
+}

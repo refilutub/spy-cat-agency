@@ -9,4 +9,5 @@ type SpyCatService interface {
 	CreateSpyCat(spyCatReq dtos.SpyCatRequest) (dtos.SpyCatSingleResponseDTO, error)
 
 	DeleteSpyCat(spyCatId uuid.UUID) error
+	DeleteBatchSpyCats(spyCatIds dtos.DeleteIds) error
 }

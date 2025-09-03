@@ -34,3 +34,43 @@ func (s *SpyCatRepository) DeleteSpyCat(spyCatId uuid.UUID) error {
 	}
 	return s.db.Delete(&models.Cat{}, "id = ?", spyCatId).Error
 }
+
+func (s *SpyCatRepository) DeleteBatchSpyCats(spyCatIds []uuid.UUID) error {
+	var catsWithMissions []uuid.UUID
+
+	if err := s.db.
+		Model(&models2.Mission{}).
+		Where("cat_id IN ?", spyCatIds).
+		Pluck("cat_id", &catsWithMissions).Error; err != nil {
+		return err
+	}
+
+	referenced := make(map[uuid.UUID]bool, len(catsWithMissions))
+	for _, id := range catsWithMissions {
+		referenced[id] = true
+	}
+
+	var softDeleteIds, hardDeleteIds []uuid.UUID
+	for _, id := range spyCatIds {
+		if referenced[id] {
+			softDeleteIds = append(softDeleteIds, id)
+		} else {
+			hardDeleteIds = append(hardDeleteIds, id)
+		}
+	}
+
+	if len(softDeleteIds) > 0 {
+		if err := s.db.Delete(&models.Cat{}, "id IN ?", softDeleteIds).Error; err != nil {
+			return err
+		}
+	}
+
+	if len(hardDeleteIds) > 0 {
+		if err := s.db.Unscoped().Delete(&models.Cat{}, "id IN ?", hardDeleteIds).Error; err != nil {
+			return err
+		}
+	}
+
+	return nil
+
+}
