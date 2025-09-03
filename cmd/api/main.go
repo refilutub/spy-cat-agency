@@ -36,9 +36,7 @@ func main() {
 
 	missionsRepo := repository2.NewMissionsRepository(db)
 	missionsService := services2.NewMissionsService(missionsRepo)
-	missionsHandler := &handlers2.MissionsHandler{
-		Service: missionsService,
-	}
+	missionsHandler := handlers2.NewMissionsHandler(missionsService)
 
 	r := router.SetUpRouter(spyCatsHandler, missionsHandler)
 
