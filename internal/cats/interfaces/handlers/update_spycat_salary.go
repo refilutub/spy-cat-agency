@@ -28,8 +28,9 @@ func (h *SpyCatHandler) UpdateSpyCatSalaryHandler(c *gin.Context) {
 		case gorm.ErrRecordNotFound:
 			c.JSON(http.StatusNotFound, gin.H{"error": "spycat not found"})
 			return
+		default:
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, spycat)
