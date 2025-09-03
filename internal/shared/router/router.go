@@ -3,6 +3,8 @@ package router
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"spy-cat-agency/internal/cats/interfaces"
+	"spy-cat-agency/internal/cats/interfaces/handlers"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -10,7 +12,7 @@ import (
 	_ "spy-cat-agency/docs"
 )
 
-func SetUpRouter() *gin.Engine {
+func SetUpRouter(spyCatshandler *handlers.SpyCatHandler) *gin.Engine {
 
 	gin.SetMode(gin.ReleaseMode)
 
@@ -24,6 +26,10 @@ func SetUpRouter() *gin.Engine {
 	}))
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	api := r.Group("/api")
+
+	interfaces.SetUpCatRouter(api, spyCatshandler)
 
 	return r
 }

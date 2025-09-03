@@ -3,6 +3,9 @@ package main
 import (
 	"log"
 	"os"
+	"spy-cat-agency/internal/cats/application/services"
+	"spy-cat-agency/internal/cats/interfaces/handlers"
+	"spy-cat-agency/internal/cats/repository"
 	"spy-cat-agency/internal/shared/db"
 	"spy-cat-agency/internal/shared/router"
 
@@ -17,12 +20,18 @@ import (
 // @BasePath /api
 func main() {
 
-	_, err := db.InitDB()
+	db, err := db.InitDB()
 	if err != nil {
 		log.Fatalf("Error initializing database: %v", err)
 	}
 
-	r := router.SetUpRouter()
+	spyCatsRepo := repository.NewSpyCatRepository(db)
+	spyCatsService := services.NewSpyCatService(spyCatsRepo)
+	spyCatsHandler := &handlers.SpyCatHandler{
+		Service: spyCatsService,
+	}
+
+	r := router.SetUpRouter(spyCatsHandler)
 
 	apiPort := os.Getenv("API_PORT")
 	if err := r.Run(":" + apiPort); err != nil {
