@@ -47,7 +47,6 @@ func MissionTargetsToDTO(targets []models.Target) []dtos.TargetDTO {
 
 	for _, target := range targets {
 		targetDtos = append(targetDtos, dtos.TargetDTO{
-			Id:            target.ID,
 			Name:          target.Name,
 			Country:       target.Country,
 			Notes:         target.Notes,
@@ -57,4 +56,45 @@ func MissionTargetsToDTO(targets []models.Target) []dtos.TargetDTO {
 	}
 
 	return targetDtos
+}
+
+func MissionToResponseDTO(mission *models.Mission) dtos.MissionResponseDTO {
+	var catDTO *dtos.CatDTO
+	if mission.Cat != nil {
+		catDTO = &dtos.CatDTO{
+			ID:              mission.Cat.ID,
+			Name:            mission.Cat.Name,
+			ExperienceYears: mission.Cat.ExperienceYears,
+			Breed:           mission.Cat.Breed,
+			Salary:          mission.Cat.Salary,
+		}
+	}
+
+	var targetDTOs []dtos.TargetResponseDTO
+	for _, target := range mission.Targets {
+		targetDTOs = append(targetDTOs, TargetToResponseDTO(&target))
+	}
+
+	return dtos.MissionResponseDTO{
+		ID:            mission.ID,
+		CatID:         mission.CatID,
+		Cat:           catDTO,
+		Targets:       targetDTOs,
+		CompleteState: mission.CompleteState,
+		UpdatedAt:     mission.UpdatedAt,
+		CreatedAt:     mission.CreatedAt,
+	}
+}
+
+func TargetToResponseDTO(target *models.Target) dtos.TargetResponseDTO {
+	return dtos.TargetResponseDTO{
+		ID:            target.ID,
+		MissionID:     target.MissionID,
+		Name:          target.Name,
+		Country:       target.Country,
+		Notes:         target.Notes,
+		CompleteState: target.CompleteState,
+		UpdatedAt:     target.UpdatedAt,
+		CreatedAt:     target.CreatedAt,
+	}
 }
