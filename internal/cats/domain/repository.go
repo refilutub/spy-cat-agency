@@ -10,4 +10,6 @@ type SpyCatRepository interface {
 
 	DeleteSpyCat(spyCatId uuid.UUID) error
 	DeleteBatchSpyCats(spyCatIds []uuid.UUID) error
+
+	UpdateSpyCatSalary(spyCatId uuid.UUID, newSalary float64) (*models.Cat, error)
 }

@@ -74,3 +74,16 @@ func (s *SpyCatRepository) DeleteBatchSpyCats(spyCatIds []uuid.UUID) error {
 	return nil
 
 }
+
+func (s *SpyCatRepository) UpdateSpyCatSalary(spyCatId uuid.UUID, newSalary float64) (*models.Cat, error) {
+	var cat models.Cat
+	if err := s.db.First(&cat, "id = ?", spyCatId).Error; err != nil {
+		return nil, err
+	}
+
+	cat.Salary = newSalary
+	if err := s.db.Save(&cat).Error; err != nil {
+		return nil, err
+	}
+	return &cat, nil
+}

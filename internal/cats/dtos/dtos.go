@@ -28,3 +28,7 @@ type BreedName struct {
 type DeleteIds struct {
 	Ids []uuid.UUID `json:"ids"`
 }
+
+type SalaryUpdateRequest struct {
+	Salary float64 `json:"salary"`
+}
