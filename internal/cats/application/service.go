@@ -1,9 +1,12 @@
 package application
 
 import (
+	"github.com/google/uuid"
 	"spy-cat-agency/internal/cats/dtos"
 )
 
 type SpyCatService interface {
 	CreateSpyCat(spyCatReq dtos.SpyCatRequest) (dtos.SpyCatSingleResponseDTO, error)
+
+	DeleteSpyCat(spyCatId uuid.UUID) error
 }
