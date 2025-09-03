@@ -87,3 +87,11 @@ func (s *SpyCatRepository) UpdateSpyCatSalary(spyCatId uuid.UUID, newSalary floa
 	}
 	return &cat, nil
 }
+
+func (s *SpyCatRepository) GetAllSpyCats() ([]models.Cat, error) {
+	var cats []models.Cat
+	if err := s.db.Find(&cats).Error; err != nil {
+		return nil, err
+	}
+	return cats, nil
+}

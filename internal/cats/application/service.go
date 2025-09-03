@@ -12,4 +12,6 @@ type SpyCatService interface {
 	DeleteBatchSpyCats(spyCatIds dtos.DeleteIds) error
 
 	UpdateSpyCatSalary(spyCatId uuid.UUID, salaryReq dtos.SalaryUpdateRequest) (dtos.SpyCatSingleResponseDTO, error)
+
+	GetAllSpyCats() ([]dtos.SpyCatListResponseDTO, error)
 }

@@ -15,5 +15,7 @@ func SetUpCatRouter(r *gin.RouterGroup, h *handlers.SpyCatHandler) {
 		spycats.DELETE("/", h.DeleteBatchSpyCatsHandler)
 
 		spycats.PATCH("/:spycatId", h.UpdateSpyCatSalaryHandler)
+
+		spycats.GET("/", h.GetAllSpyCats)
 	}
 }

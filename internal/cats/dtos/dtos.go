@@ -22,6 +22,14 @@ type SpyCatSingleResponseDTO struct {
 	UpdatedAt       time.Time `json:"updated_at"`
 }
 
+type SpyCatListResponseDTO struct {
+	Id              uuid.UUID `json:"id"`
+	Name            string    `json:"name"`
+	ExperienceYears int       `json:"experience_years"`
+	Breed           string    `json:"breed"`
+	Salary          float64   `json:"salary"`
+}
+
 type BreedName struct {
 	Name string `json:"name"`
 }

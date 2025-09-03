@@ -26,3 +26,20 @@ func SpyCatSingleToDTO(spycat *models.Cat) dtos.SpyCatSingleResponseDTO {
 		UpdatedAt:       spycat.UpdatedAt,
 	}
 }
+
+func SpyCatsToDTO(spycatList []models.Cat) []dtos.SpyCatListResponseDTO {
+	var dtoList []dtos.SpyCatListResponseDTO
+
+	for _, spycat := range spycatList {
+		dto := dtos.SpyCatListResponseDTO{
+			Id:              spycat.ID,
+			Name:            spycat.Name,
+			ExperienceYears: spycat.ExperienceYears,
+			Breed:           spycat.Breed,
+			Salary:          spycat.Salary,
+		}
+		dtoList = append(dtoList, dto)
+	}
+
+	return dtoList
+}
